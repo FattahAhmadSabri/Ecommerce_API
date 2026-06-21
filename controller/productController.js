@@ -1,7 +1,5 @@
-let products = [{ id: 1, name: "Math" }];
-let nextProductId = 2;
+const {getProductByIdService,createProductService,products} = require("../service/productService")
 
-const findProductById = (id) => products.find((p) => p.id === id);
 
 const getProducts = async (req, res) => {
   try {
@@ -14,7 +12,7 @@ const getProducts = async (req, res) => {
 const getProductById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const foundProduct = findProductById(id);
+    const foundProduct = getProductByIdService(id);
     if (!foundProduct) {
       return res
         .status(404)
@@ -31,8 +29,8 @@ const getProductById = async (req, res) => {
 const createProduct = async (req, res) => {
   try {
     const { name } = req.body;
-    const newProduct = { id: nextProductId++, name };
-    products.push(newProduct);
+    const newProduct = createProductService(name);
+    
     res.status(201).json({ message: "Adding a new product", data: newProduct });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -43,5 +41,5 @@ module.exports = {
   getProducts,
   getProductById,
   createProduct,
-  findProductById,
+  
 };
