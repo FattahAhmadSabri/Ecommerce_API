@@ -1,11 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>View Product inside the cart</h1>
-</body>
+    <form action="/carts/1/cart/items" method="POST">
+      <label for="productId">Product ID:</label>
+      <input type="number" id="productId" name="productId" />
+      <br />
+      <label for="productId">Product Quantity:</label>
+      <input type="number" id="quantity" name="quantity" />
+      <br />
+      <button type="submit">Add To Cart</button>
+    </form>
+  </body>
 </html>
