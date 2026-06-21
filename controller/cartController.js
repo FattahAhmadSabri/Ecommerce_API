@@ -1,4 +1,5 @@
 const { users } = require("./userController");
+const { findProductById } = require("./productController");
 
 const findUser = (id) => users.find((u) => u.id === id);
 
@@ -44,9 +45,18 @@ const getCartItems = async (req, res) => {
       return res.status(404).json({ message: `User with ID: ${id} not found` });
     }
     foundUser.cart = foundUser.cart || [];
+    const cartItems = foundUser.cart.map((item) => {
+      const product = findProductById(item.productId);
+      return {
+        productId: item.productId,
+        quantity: item.quantity,
+        product: product || null,
+      };
+    });
+
     res
       .status(200)
-      .json({ message: `Cart items for user ${id}`, data: foundUser.cart });
+      .json({ message: `Cart items for user ${id}`, data: cartItems });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
