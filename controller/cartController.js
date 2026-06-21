@@ -1,3 +1,4 @@
+const path = require("path")
 const {
   createCartService,
   getCartService,
@@ -25,8 +26,10 @@ const getCart = async (req, res) => {
     const id = parseInt(req.params.id);
     const cart = getCartService(id);
     if (!cart) {
+        // res.sendFile(path.join("..","view","cart.html"))
       return res.status(404).json({ message: `User with ID: ${id} not found` });
     }
+    // res.sendFile(path.join("..","view","cart.html"))
     res.status(200).json({ message: `Cart for user ${id}`, data: cart });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -40,10 +43,10 @@ const getCartItems = async (req, res) => {
     if (!cartItems) {
       return res.status(404).json({ message: `User with ID: ${id} not found` });
     }
-
-    res
-      .status(200)
-      .json({ message: `Cart items for user ${id}`, data: cartItems });
+      res.sendFile(path.join(__dirname,"..","view","cart.html"))
+    // res
+    //   .status(200)
+    //   .json({ message: `Cart items for user ${id}`, data: cartItems });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -1,3 +1,4 @@
+const path =require("path")
 const {users, createUserService, getUserByIdService}= require("../service/userService")
 
 const createUser = async (req, res) => {
@@ -11,7 +12,8 @@ const createUser = async (req, res) => {
 };
 const getUser = async (req, res) => {
   try {
-    res.status(200).json({ message: "Fetching all users", data: users });
+    res.sendFile(path.join(__dirname,"..","view","user.html"))
+    // res.status(200).json({ message: "Fetching all users", data: users });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

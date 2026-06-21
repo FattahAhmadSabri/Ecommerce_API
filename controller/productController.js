@@ -1,9 +1,11 @@
+const path = require("path")
 const {getProductByIdService,createProductService,products} = require("../service/productService")
 
 
 const getProducts = async (req, res) => {
   try {
-    res.status(200).json({ message: "Fetching all products", data: products });
+    res.status(200).sendFile(path.join(__dirname,"..","view","product.html"))
+    // res.status(200).json({ message: "Fetching all products", data: products });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
