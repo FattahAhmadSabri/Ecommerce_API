@@ -1,23 +1,27 @@
-const path = require("path")
+const path = require("path");
 const {
   createCartService,
   getCartService,
   getCartItemsService,
   addItemToCartService,
 } = require("../service/cartService");
+const { errorResponse, successResponse } = require("../utils/response");
 
 const createCart = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const cart = createCartService(id);
     if (!cart) {
-      return res.status(404).json({ message: `User with ID: ${id} not found` });
+      //   return res.status(404).json({ message: `User with ID: ${id} not found` });
+      return errorResponse(res, `User with ID: ${id} not found`, 404);
     }
-    res
-      .status(201)
-      .json({ message: `Cart created for user ${id}`, data: cart });
+    // res
+    //   .status(201)
+    //   .json({ message: `Cart created for user ${id}`, data: cart });
+    return successResponse(res, `Cart created for user ${id}`, 201);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
+    return errorResponse(res, error.message);
   }
 };
 
@@ -26,13 +30,15 @@ const getCart = async (req, res) => {
     const id = parseInt(req.params.id);
     const cart = getCartService(id);
     if (!cart) {
-        // res.sendFile(path.join("..","view","cart.html"))
-      return res.status(404).json({ message: `User with ID: ${id} not found` });
+      // res.sendFile(path.join("..","view","cart.html"))
+      //   return res.status(404).json({ message: `User with ID: ${id} not found` });
+      return errorResponse(res, `User with ID: ${id} not found`, 404);
     }
     // res.sendFile(path.join("..","view","cart.html"))
-    res.status(200).json({ message: `Cart for user ${id}`, data: cart });
+    // res.status(200).json({ message: `Cart for user ${id}`, data: cart });
+    return successResponse(res, `Cart for user ${id}`, cart);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return errorResponse(res, error.message);
   }
 };
 
@@ -41,14 +47,16 @@ const getCartItems = async (req, res) => {
     const id = parseInt(req.params.id);
     const cartItems = getCartItemsService(id);
     if (!cartItems) {
-      return res.status(404).json({ message: `User with ID: ${id} not found` });
+      //   return res.status(404).json({ message: `User with ID: ${id} not found` });
+      return errorResponse(res, `User with ID: ${id} not found`, 404);
     }
-      res.sendFile(path.join(__dirname,"..","view","cart.html"))
+    res.sendFile(path.join(__dirname, "..", "view", "cart.html"));
     // res
     //   .status(200)
     //   .json({ message: `Cart items for user ${id}`, data: cartItems });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
+    return errorResponse(res, error.message);
   }
 };
 
@@ -58,19 +66,23 @@ const addItemToCart = async (req, res) => {
     const { productId, quantity = 1 } = req.body;
 
     if (!productId) {
-      return res.status(400).json({ message: "productId is required" });
+    //   return res.status(400).json({ message: "productId is required" });
+     return errorResponse(res,"productId is required",400)
     }
 
     const cart = addItemToCartService(userId, productId, quantity);
     if (!cart) {
-      return res
-        .status(404)
-        .json({ message: `User with ID: ${userId} not found` });
+    //   return res
+    //     .status(404)
+    //     .json({ message: `User with ID: ${userId} not found` });
+      return errorResponse(res,`User with ID: ${userId} not found`,404)
     }
 
-    res.status(200).json({ message: "Item added to cart", data: cart });
+    // res.status(200).json({ message: "Item added to cart", data: cart });
+     successResponse(res,"Item added to cart",cart,201)
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    // res.status(500).json({ message: error.message });
+    return errorResponse(res, error.message);
   }
 };
 module.exports = {
